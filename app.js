@@ -1,5 +1,9 @@
 function dashboardApp() {
-  const base = structuredClone(window.MOCK_DASHBOARD_DATA);
+  const source = window.MOCK_DASHBOARD_DATA;
+  const base =
+    typeof structuredClone === 'function'
+      ? structuredClone(source)
+      : JSON.parse(JSON.stringify(source));
 
   return {
     ...base,
@@ -22,6 +26,11 @@ function dashboardApp() {
 
       const avg = this.revenue.reduce((acc, current) => acc + current.value, 0) / this.revenue.length;
       this.stats[0].value = `€${Math.round(avg * 1200).toLocaleString('fr-FR')}`;
+    },
+
+    barHeight(value) {
+      const max = Math.max(...this.revenue.map((point) => point.value), 1);
+      return Math.max(8, Math.round((value / max) * 170));
     }
   };
 }

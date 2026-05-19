@@ -2,7 +2,7 @@ window.MOCK_DASHBOARD_DATA = {
   stats: [
     { label: 'MRR', value: '€48,320', delta: '+12.4%', positive: true },
     { label: 'Utilisateurs actifs', value: '8,492', delta: '+3.2%', positive: true },
-    { label: 'Tickets ouverts', value: '37', delta: '-8.7%', positive: true },
+    { label: 'Tickets ouverts', value: '37', delta: '-8.7%', positive: false },
     { label: 'Churn', value: '1.9%', delta: '+0.4%', positive: false }
   ],
   tasks: [
