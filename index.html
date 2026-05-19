@@ -20,81 +20,153 @@
 
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body x-data="dashboardApp()" class="dashboard-body">
-    <header class="topbar">
-      <div>
-        <p class="muted">Vue globale</p>
-        <h1>Tableau de bord</h1>
-      </div>
-      <div class="topbar-actions">
-        <wa-input
-          clearable
-          aria-label="Rechercher une tâche"
-          placeholder="Rechercher une tâche..."
-          x-model="search"
-          @input="filterTasks"
-        >
-          <wa-icon slot="prefix" name="magnifying-glass"></wa-icon>
-        </wa-input>
-        <wa-button variant="brand" @click="randomizeRevenue">
-          <wa-icon slot="prefix" name="arrows-rotate"></wa-icon>
-          Mettre à jour
-        </wa-button>
-      </div>
-    </header>
+  <body x-data="dashboardApp()" class="app-shell">
 
-    <main class="grid-layout">
-      <section class="stats-grid">
-        <template x-for="item in stats" :key="item.label">
-          <article class="card">
-            <p class="muted" x-text="item.label"></p>
-            <h2 x-text="item.value"></h2>
-            <p class="delta" :class="item.positive ? 'up' : 'down'" x-text="item.delta"></p>
-          </article>
-        </template>
-      </section>
+    <!-- ── Sidebar overlay (mobile) ── -->
+    <div
+      class="sidebar-overlay"
+      :class="{ 'is-visible': sidebarOpen }"
+      @click="sidebarOpen = false"
+    ></div>
 
-      <section class="card tasks-card">
-        <div class="card-title-row">
-          <h3>Tâches en cours</h3>
-          <wa-badge variant="brand" pill x-text="filteredTasks.length"></wa-badge>
+    <!-- ── Sidebar ── -->
+    <aside class="sidebar" :class="{ 'is-open': sidebarOpen }">
+      <!-- Brand -->
+      <div class="sidebar-brand">
+        <div class="brand-icon">
+          <wa-icon name="chart-bar" style="font-size:1.25rem;color:#fff;"></wa-icon>
         </div>
+        <span class="brand-name">Acme Corp</span>
+      </div>
 
-        <template x-for="task in filteredTasks" :key="task.id">
-          <div class="task-row">
-            <div>
-              <p class="task-title" x-text="task.title"></p>
-              <p class="muted" x-text="task.owner"></p>
-            </div>
-            <wa-select size="small" x-model="task.status">
-              <wa-option value="todo">À faire</wa-option>
-              <wa-option value="progress">En cours</wa-option>
-              <wa-option value="done">Terminé</wa-option>
-            </wa-select>
+      <!-- Nav -->
+      <nav class="sidebar-nav">
+        <template x-for="item in navItems" :key="item.label">
+          <a
+            href="#"
+            class="nav-item"
+            :class="{ 'is-active': activeNav === item.label }"
+            @click.prevent="setNav(item.label)"
+          >
+            <wa-icon :name="item.icon"></wa-icon>
+            <span x-text="item.label"></span>
+          </a>
+        </template>
+      </nav>
+
+      <!-- User -->
+      <div class="sidebar-footer">
+        <div class="user-avatar" style="background:#7c3aed">SD</div>
+        <div class="user-info">
+          <p class="user-name">Sofia Davis</p>
+          <p class="user-email">sofia@acme.com</p>
+        </div>
+        <wa-icon name="ellipsis" style="color:hsl(var(--muted-foreground));cursor:pointer;"></wa-icon>
+      </div>
+    </aside>
+
+    <!-- ── Main area ── -->
+    <div class="main-area">
+
+      <!-- Top header -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="hamburger" @click="toggleSidebar" aria-label="Menu">
+            <wa-icon name="bars-3"></wa-icon>
+          </button>
+          <div>
+            <h1 class="page-title">Tableau de bord</h1>
           </div>
-        </template>
-      </section>
+        </div>
+        <div class="topbar-right">
+          <wa-input
+            clearable
+            aria-label="Rechercher"
+            placeholder="Rechercher..."
+            style="width:220px;"
+          >
+            <wa-icon slot="prefix" name="magnifying-glass"></wa-icon>
+          </wa-input>
+          <wa-button variant="brand" @click="randomizeRevenue">
+            <wa-icon slot="prefix" name="arrows-rotate"></wa-icon>
+            Actualiser
+          </wa-button>
+          <div class="user-avatar topbar-avatar" style="background:#7c3aed">SD</div>
+        </div>
+      </header>
 
-      <section class="card chart-card">
-        <div class="card-title-row">
-          <h3>Revenu mensuel</h3>
-          <wa-switch x-model="showTrend">Afficher tendance</wa-switch>
+      <!-- Content -->
+      <main class="content">
+
+        <!-- Tab row -->
+        <div class="tab-row">
+          <button class="tab-btn is-active">Vue d'ensemble</button>
+          <button class="tab-btn">Analyses</button>
+          <button class="tab-btn">Rapports</button>
+          <button class="tab-btn">Notifications</button>
         </div>
-        <div class="bars">
-          <template x-for="point in revenue" :key="point.month">
-            <div class="bar-col">
-              <div class="bar-wrap">
-                <div class="bar" :style="`height:${barHeight(point.value)}px`"></div>
-                <template x-if="showTrend">
-                  <span class="bar-value" x-text="point.value + 'k€'"></span>
-                </template>
+
+        <!-- Stats cards -->
+        <section class="stats-grid">
+          <template x-for="item in stats" :key="item.label">
+            <article class="card stat-card">
+              <div class="stat-header">
+                <p class="stat-label" x-text="item.label"></p>
+                <wa-icon :name="item.icon" class="stat-icon"></wa-icon>
               </div>
-              <span class="muted" x-text="point.month"></span>
-            </div>
+              <p class="stat-value" x-text="item.value"></p>
+              <p class="stat-delta" :class="item.positive ? 'up' : 'down'" x-text="item.delta"></p>
+            </article>
           </template>
+        </section>
+
+        <!-- Bottom panels -->
+        <div class="bottom-row">
+
+          <!-- Overview chart -->
+          <section class="card chart-card">
+            <div class="card-header">
+              <h3 class="card-title">Vue d'ensemble</h3>
+            </div>
+            <div class="bars">
+              <template x-for="point in revenue" :key="point.month">
+                <div class="bar-col">
+                  <div class="bar-wrap">
+                    <div class="bar" :style="`height:${barHeight(point.value)}px`"></div>
+                  </div>
+                  <span class="bar-label" x-text="point.month"></span>
+                </div>
+              </template>
+            </div>
+          </section>
+
+          <!-- Recent Sales -->
+          <section class="card sales-card">
+            <div class="card-header">
+              <h3 class="card-title">Ventes récentes</h3>
+              <p class="card-sub">Vous avez effectué 265 ventes ce mois.</p>
+            </div>
+            <ul class="sales-list">
+              <template x-for="sale in recentSales" :key="sale.email">
+                <li class="sale-row">
+                  <div
+                    class="user-avatar"
+                    :style="`background:${avatarColor(sale.initials)}`"
+                    x-text="sale.initials"
+                  ></div>
+                  <div class="sale-info">
+                    <p class="sale-name" x-text="sale.name"></p>
+                    <p class="sale-email" x-text="sale.email"></p>
+                  </div>
+                  <p class="sale-amount" x-text="sale.amount"></p>
+                </li>
+              </template>
+            </ul>
+          </section>
+
         </div>
-      </section>
-    </main>
+      </main>
+    </div>
 
     <script
       src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"
