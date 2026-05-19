@@ -36,8 +36,9 @@ function dashboardApp() {
       const colors = [
         '#7c3aed', '#db2777', '#0284c7', '#059669', '#d97706', '#dc2626'
       ];
-      const idx = (initials.charCodeAt(0) + initials.charCodeAt(1)) % colors.length;
-      return colors[idx];
+      const code0 = initials.charCodeAt(0) || 0;
+      const code1 = initials.length > 1 ? initials.charCodeAt(1) : 0;
+      return colors[(code0 + code1) % colors.length];
     }
   };
 }

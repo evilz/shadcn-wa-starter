@@ -259,7 +259,6 @@ body {
   padding: 1.25rem;
 }
 
-.stat-card { }
 .stat-header {
   display: flex;
   align-items: center;
@@ -300,7 +299,6 @@ body {
 }
 
 /* Chart card */
-.chart-card { }
 .card-header {
   margin-bottom: 1.25rem;
 }
@@ -350,7 +348,6 @@ body {
 }
 
 /* Sales card */
-.sales-card { }
 .sales-list {
   list-style: none;
   margin: 0;
