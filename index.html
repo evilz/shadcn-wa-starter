@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="fr" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard WebAwesome + Alpine.js</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/@awesome.me/webawesome@3/dist/webawesome.loader.js"
+    ></script>
+
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body x-data="dashboardApp()" class="dashboard-body">
+    <header class="topbar">
+      <div>
+        <p class="muted">Vue globale</p>
+        <h1>Tableau de bord</h1>
+      </div>
+      <div class="topbar-actions">
+        <wa-input
+          clearable
+          placeholder="Rechercher une tâche..."
+          x-model="search"
+          @input="filterTasks"
+        >
+          <wa-icon slot="prefix" name="magnifying-glass"></wa-icon>
+        </wa-input>
+        <wa-button variant="brand" @click="randomizeRevenue">
+          <wa-icon slot="prefix" name="arrows-rotate"></wa-icon>
+          Mettre à jour
+        </wa-button>
+      </div>
+    </header>
+
+    <main class="grid-layout">
+      <section class="stats-grid">
+        <article class="card" x-for="item in stats" :key="item.label">
+          <p class="muted" x-text="item.label"></p>
+          <h2 x-text="item.value"></h2>
+          <p class="delta" :class="item.positive ? 'up' : 'down'" x-text="item.delta"></p>
+        </article>
+      </section>
+
+      <section class="card tasks-card">
+        <div class="card-title-row">
+          <h3>Tâches en cours</h3>
+          <wa-badge variant="brand" pill x-text="filteredTasks.length"></wa-badge>
+        </div>
+
+        <template x-for="task in filteredTasks" :key="task.id">
+          <div class="task-row">
+            <div>
+              <p class="task-title" x-text="task.title"></p>
+              <p class="muted" x-text="task.owner"></p>
+            </div>
+            <wa-select size="small" x-model="task.status">
+              <wa-option value="todo">À faire</wa-option>
+              <wa-option value="progress">En cours</wa-option>
+              <wa-option value="done">Terminé</wa-option>
+            </wa-select>
+          </div>
+        </template>
+      </section>
+
+      <section class="card chart-card">
+        <div class="card-title-row">
+          <h3>Revenu mensuel</h3>
+          <wa-switch x-model="showTrend">Afficher tendance</wa-switch>
+        </div>
+        <div class="bars">
+          <template x-for="point in revenue" :key="point.month">
+            <div class="bar-col">
+              <div class="bar-wrap">
+                <div class="bar" :style="`height:${point.value / 40}px`"></div>
+                <template x-if="showTrend">
+                  <span class="bar-value" x-text="point.value + 'k€'"></span>
+                </template>
+              </div>
+              <span class="muted" x-text="point.month"></span>
+            </div>
+          </template>
+        </div>
+      </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

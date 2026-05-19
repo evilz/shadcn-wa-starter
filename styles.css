@@ -1,0 +1,114 @@
+:root {
+  --background: 0 0% 100%;
+  --foreground: 222.2 84% 4.9%;
+  --muted: 210 40% 96.1%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+  --card: 0 0% 100%;
+  --border: 214.3 31.8% 91.4%;
+  --primary: 222.2 47.4% 11.2%;
+  --primary-foreground: 210 40% 98%;
+  --radius: 0.75rem;
+}
+
+* { box-sizing: border-box; }
+
+body.dashboard-body {
+  margin: 0;
+  font-family: Inter, system-ui, sans-serif;
+  background: hsl(var(--muted));
+  color: hsl(var(--foreground));
+  min-height: 100vh;
+  padding: 1rem;
+}
+
+.topbar, .card {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+}
+
+.topbar {
+  max-width: 1200px;
+  margin: 0 auto 1rem;
+  padding: 1rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.topbar-actions {
+  display: flex;
+  gap: .75rem;
+  flex-wrap: wrap;
+}
+
+.grid-layout {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  gap: 1rem;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+.card { padding: 1rem; }
+.card h2 { margin: .35rem 0; }
+.card h3 { margin: 0; font-size: 1rem; }
+.muted { color: hsl(var(--muted-foreground)); margin: 0; }
+.delta { font-size: .875rem; font-weight: 600; margin: 0; }
+.up { color: #059669; }
+.down { color: #dc2626; }
+
+.card-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: .75rem;
+  gap: .75rem;
+}
+
+.task-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: .75rem 0;
+  border-top: 1px solid hsl(var(--border));
+}
+
+.task-title { margin: 0 0 .2rem; font-weight: 600; }
+
+.bars {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(45px, 1fr));
+  gap: .65rem;
+  align-items: end;
+}
+
+.bar-col { text-align: center; }
+.bar-wrap {
+  height: 170px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  gap: .35rem;
+}
+.bar {
+  width: 100%;
+  border-radius: .65rem;
+  background: hsl(var(--primary));
+}
+.bar-value { font-size: .75rem; color: hsl(var(--muted-foreground)); }
+
+@media (max-width: 760px) {
+  .topbar-actions { width: 100%; }
+  .topbar-actions wa-input { flex: 1; min-width: 180px; }
+  .bars { grid-template-columns: repeat(3, minmax(60px, 1fr)); row-gap: 1rem; }
+}
