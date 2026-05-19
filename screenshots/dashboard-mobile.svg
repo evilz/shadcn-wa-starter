@@ -1,0 +1,13 @@
+<svg width="430" height="932" viewBox="0 0 430 932" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="430" height="932" fill="#F4F4F5"/>
+<rect x="12" y="16" width="406" height="110" rx="12" fill="white" stroke="#E4E4E7"/>
+<text x="28" y="66" fill="#09090B" font-size="26" font-family="Inter,Arial">Dashboard mobile</text>
+<rect x="26" y="142" width="188" height="96" rx="12" fill="white" stroke="#E4E4E7"/>
+<rect x="216" y="142" width="188" height="96" rx="12" fill="white" stroke="#E4E4E7"/>
+<rect x="26" y="248" width="188" height="96" rx="12" fill="white" stroke="#E4E4E7"/>
+<rect x="216" y="248" width="188" height="96" rx="12" fill="white" stroke="#E4E4E7"/>
+<rect x="12" y="358" width="406" height="260" rx="12" fill="white" stroke="#E4E4E7"/>
+<text x="28" y="396" fill="#09090B" font-size="20" font-family="Inter,Arial">Tâches</text>
+<rect x="12" y="632" width="406" height="288" rx="12" fill="white" stroke="#E4E4E7"/>
+<text x="28" y="670" fill="#09090B" font-size="20" font-family="Inter,Arial">Revenu</text>
+</svg>
