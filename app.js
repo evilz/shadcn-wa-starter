@@ -7,30 +7,38 @@ function dashboardApp() {
 
   return {
     ...base,
-    search: '',
-    filteredTasks: base.tasks,
-    showTrend: true,
+    sidebarOpen: window.innerWidth >= 1024,
+    activeNav: 'Tableau de bord',
 
-    filterTasks() {
-      const term = this.search.toLowerCase().trim();
-      this.filteredTasks = this.tasks.filter((task) =>
-        task.title.toLowerCase().includes(term) || task.owner.toLowerCase().includes(term)
-      );
+    toggleSidebar() {
+      this.sidebarOpen = !this.sidebarOpen;
+    },
+
+    setNav(label) {
+      this.activeNav = label;
     },
 
     randomizeRevenue() {
       this.revenue = this.revenue.map((point) => ({
         ...point,
-        value: Math.max(16, Math.min(56, point.value + Math.floor(Math.random() * 11) - 5))
+        value: Math.max(50, Math.min(500, point.value + Math.floor(Math.random() * 61) - 30))
       }));
-
-      const avg = this.revenue.reduce((acc, current) => acc + current.value, 0) / this.revenue.length;
-      this.stats[0].value = `€${Math.round(avg * 1200).toLocaleString('fr-FR')}`;
+      const total = this.revenue.reduce((acc, p) => acc + p.value, 0);
+      this.stats[0].value = `€${(total * 100).toLocaleString('fr-FR', { minimumFractionDigits: 2 })}`;
     },
 
     barHeight(value) {
-      const max = Math.max(...this.revenue.map((point) => point.value), 1);
-      return Math.max(8, Math.round((value / max) * 170));
+      const max = Math.max(...this.revenue.map((p) => p.value), 1);
+      return Math.max(4, Math.round((value / max) * 200));
+    },
+
+    avatarColor(initials) {
+      const colors = [
+        '#7c3aed', '#db2777', '#0284c7', '#059669', '#d97706', '#dc2626'
+      ];
+      const code0 = initials.charCodeAt(0) || 0;
+      const code1 = initials.length > 1 ? initials.charCodeAt(1) : 0;
+      return colors[(code0 + code1) % colors.length];
     }
   };
 }
